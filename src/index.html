@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Выбор времени</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div id="root">
+    <header>
+      <h1>HEADER</h1>
+    </header>
+    <main>
+      <div class="main">
+        <div class="calendar">
+          <div class="calendar-header">
+            <div class="month-box">
+              <div class="month-title">
+                <span class="month-name"></span>
+                <span class="month-year"></span>
+              </div>
+              <div class="month-switch">
+                <button class="btn-lt">&lt;</button>
+                <button class="btn-gt">&gt;</button>
+              </div>
+            </div>
+          </div>
+          <div class="calendar-main">
+            <div class="days-box">
+              <div class="days-of-week">
+                <div class="day-of-week">ПН</div>
+                <div class="day-of-week">ВТ</div>
+                <div class="day-of-week">СР</div>
+                <div class="day-of-week">ЧТ</div>
+                <div class="day-of-week">ПТ</div>
+                <div class="day-of-week">СБ</div>
+                <div class="day-of-week">ВС</div>
+              </div>
+              <div class="days-of-month">
+                <!-- Loading from JS -->
+              </div>
+            </div>
+          </div>
+          <div class="calendar-footer">
+            <button class="btn-submit">Записаться на СТО</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <h1>FOOTER</h1>
+    </footer>
+  </div>
+  <script src='index.js'></script>
+</body>
+
+</html>
