@@ -17,7 +17,26 @@
     --days-of-week: #4B6DDF;
     --submit-btn: #0009E1;
     --submit-btn-hover: #2D33DD;
+    --submit-btn-disabled: #A6A6C6;
     --text-submit-btn: #FFFFFF;
+    --overlay: #00000080;
+    --modal-header: #A4EBA7;
+    --modal-main: #FFFFFF;
+    --time: #808080;
+    --time-hover: #000000;
+    --collapse-btn: #ADADAD;
+    --collapse-btn-hover: #000000;
+    --cancel-select: #DA4848;
+    --cancel-select-text: #FFFFFF;
+    --close-modal-btn: #000000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+hr {
+    margin: 0;
 }
 
 html,
@@ -30,12 +49,14 @@ body {
 }
 
 @media screen and (max-width: 580px) {
-    html, body {
-        min-width: 300px;
+
+    html,
+    body {
+        min-width: 380px;
     }
 
     div.day {
-        height: 40px;
+        height: 60px;
     }
 }
 
@@ -111,24 +132,21 @@ footer {
 .month-title {
     display: flex;
     align-self: center;
-    font-size: 18px;
+    font-size: 20px;
+    gap: 0.5rem;
     cursor: default;
-}
-
-.month-name::after {
-    content: " ";
-    white-space: pre;
 }
 
 .month-switch {
     display: flex;
+    gap: 20px;
 }
 
 .month-switch>[class^="btn-"] {
+    width: 40px;
+    height: 30px;
     display: block;
-    width: 36px;
-    height: 28px;
-    font-size: 18px;
+    position: relative;
     border-radius: 10px;
     color: var(--text-month-switch-btn);
     background-color: var(--month-switch-btn);
@@ -143,14 +161,6 @@ footer {
 .month-switch>[class^="btn-"]:not(:disabled):hover {
     background-color: var(--month-switch-btn-hover);
     cursor: pointer;
-}
-
-.btn-lt {
-    margin-right: 10px;
-}
-
-.btn-gt {
-    margin-left: 10px;
 }
 
 .days-of-week {
@@ -170,29 +180,22 @@ footer {
 }
 
 .days-of-month {
+    display: flex;
+    flex-direction: column;
     background-color: var(--calendar-main);
+    gap: 1px;
 }
 
 [class^="days-row-"] {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid var(--calendar-main);
-}
-
-[class^="days-row-"]:last-child {
-    border-bottom: none;
+    gap: 1px;
 }
 
 .day {
+    position: relative;
     flex: 1 0 0;
     height: 80px;
-    box-sizing: border-box;
-    border-right: 1px solid var(--calendar-main);
-}
-
-.day:last-child {
-    padding-right: 1px;
-    border: none;
 }
 
 .day-another-month {
@@ -216,7 +219,9 @@ footer {
 
 .selected-day {
     background-color: var(--selected-day);
-    box-shadow: 0px 4px 40px var(--selected-day-shadow);
+    box-shadow: 0 0 40px var(--selected-day-shadow);
+    cursor: default;
+    z-index: 10;
 }
 
 .number-day {
@@ -225,16 +230,316 @@ footer {
     padding-left: 8px;
 }
 
+.selected-time {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.cancel-select {
+    top: 6px;
+    right: 8px;
+    position: absolute;
+    min-height: 16px;
+    min-width: 16px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 100%;
+    color: var(--cancel-select-text);
+    background-color: var(--cancel-select);
+    border-radius: 50%;
+    user-select: none;
+}
+
+.cancel-select:hover {
+    cursor: pointer;
+    box-shadow: 0 0 3px var(--cancel-select);
+}
+
 .btn-submit {
     height: 50px;
     width: 220px;
     font-size: 18px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
     color: var(--text-submit-btn);
     background-color: var(--submit-btn);
     border-radius: 10px;
 }
 
-.btn-submit:hover {
+.btn-submit:not(:disabled):hover {
     background-color: var(--submit-btn-hover);
     cursor: pointer;
 }
+
+.btn-submit:disabled {
+    background-color: var(--submit-btn-disabled);
+}
+
+.hidden {
+    display: none !important;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.overlay {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    display: block;
+    position: fixed;
+    background-color: var(--overlay);
+    overflow: auto;
+}
+
+.overlay-content {
+    min-height: 100vh;
+    min-width: min-content;
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    pointer-events: none;
+}
+
+.modal-window {
+    width: 380px;
+    padding: 10px;
+    pointer-events: auto;
+}
+
+.modal-header {
+    position: relative;
+    padding: 25px 35px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    background-color: var(--modal-header);
+}
+
+.modal-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    cursor: default;
+}
+
+.modal-title {
+    align-self: center;
+    font-size: 12px;
+}
+
+.modal-day-switch {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 500;
+}
+
+.modal-day-of-week {
+    font-size: 20px;
+}
+
+.modal-day-of-month {
+    font-size: 12px;
+}
+
+.modal-day-switch>[class^="btn-"] {
+    background: none;
+    position: relative;
+    padding: 10px;
+}
+
+.modal-day-switch>[class^="btn-"]:hover {
+    cursor: pointer;
+}
+
+/*  */
+
+.modal-day-switch>[class^="btn-"]:not(:disabled):hover>.arrow {
+    box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.15);
+}
+
+.modal-day-switch>[class^="btn-"]:not(:disabled):active>.arrow {
+    padding: 6px;
+}
+
+.modal-day-switch>[class^="btn-"]:disabled {
+    cursor: default;
+}
+
+/*  */
+
+.btn-close-modal {
+    top: 0;
+    left: 0;
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 15px;
+    padding: 5px;
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+    background: none;
+    cursor: pointer;
+    display: flex;
+}
+
+.btn-close-modal>.arrow-container {
+    position: relative;
+    display: inline-block;
+    height: 1rem;
+    width: 0.75rem;
+}
+
+.btn-close-modal:hover>span {
+    border-bottom: 1px solid var(--close-modal-btn);
+}
+
+.modal-main {
+    padding-top: 5px;
+    padding-bottom: 25px;
+    background-color: var(--modal-main);
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.modal-main hr {
+    margin: 5px 0;
+}
+
+.modal-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.morning-header,
+.afternoon-header,
+.evening-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 35px;
+}
+
+.morning-title,
+.afternoon-title,
+.evening-title {
+    cursor: default;
+}
+
+.morning-time-container,
+.afternoon-time-container,
+.evening-time-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 35px;
+    gap: 10px;
+}
+
+[class^="time-row-"] {
+    display: flex;
+    justify-content: space-between;
+}
+
+.time {
+    width: 60px;
+    height: 30px;
+    padding: 5px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid var(--time);
+    border-radius: 5px;
+    cursor: default;
+}
+
+.time:hover {
+    cursor: pointer;
+    box-shadow: 0 0 3px var(--time-hover);
+}
+
+.btn-collapse {
+    background: none;
+    position: relative;
+    padding: 10px;
+}
+
+.btn-collapse>.arrow {
+    border-color: var(--collapse-btn);
+}
+
+.btn-collapse:hover {
+    cursor: pointer;
+}
+
+.btn-collapse:hover>.arrow {
+    border-color: var(--collapse-btn-hover);
+}
+
+
+/* Arrow */
+
+i.arrow {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    display: inline-block;
+    padding: 6px;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+}
+
+.arrow.right {
+    transform: translate(-50%, -50%) translateX(-25%) rotate(-45deg);
+}
+
+.arrow.left {
+    transform: translate(-50%, -50%) translateX(25%) rotate(135deg);
+}
+
+.arrow.up {
+    transform: translate(-50%, -50%) translateY(25%) rotate(-135deg);
+}
+
+.arrow.down {
+    transform: translate(-50%, -50%) translateY(-25%) rotate(45deg);
+}
+
+.arrow.sm {
+    padding: 3px;
+}
+
+.arrow.md {
+    padding: 5px;
+}
+
+.arrow.lg {
+    padding: 7px;
+}
+
+.arrow.bw-1 {
+    border-width: 0 1px 1px 0;
+}
+
+.arrow.bw-2 {
+    border-width: 0 2px 2px 0;
+}
+
+.arrow.bw-3 {
+    border-width: 0 3px 3px 0;
+}
+
+/*  */
